@@ -1,0 +1,424 @@
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import ChatBubbleOutlineSharpIcon from "@material-ui/icons/ChatBubbleOutlineSharp";
+import SendSharpIcon from "@material-ui/icons/SendSharp";
+import BookmarkBorderSharpIcon from "@material-ui/icons/BookmarkBorderSharp";
+import BookmarkSharpIcon from "@material-ui/icons/BookmarkSharp";
+import SentimentSatisfiedOutlinedIcon from "@material-ui/icons/SentimentSatisfiedOutlined";
+import moment from "moment";
+import LikeButton from "./LikeButton";
+import Comment from "./Comment";
+import { useSelector, useDispatch } from "react-redux";
+import { getCookie } from "../../helper";
+import {
+  likePostAction,
+  unlikePostAction,
+} from "../../Redux/Action/post.action";
+import EmojiPicker from "emoji-picker-react";
+
+const PostFooter = ({ post }) => {
+  const userId = JSON.parse(localStorage.getItem("user"));
+
+  const [isLike, setIsLike] = useState(false);
+  const [emojiopen, setemojiopen] = useState(false);
+  const [commentData, setCommentData] = useState("");
+
+  let likeInitialCount = post.likes.length;
+
+  const [likeCount, setlikeCount] = useState(likeInitialCount);
+
+  useEffect(() => {
+    if (post.likes.find((like) => like == userId._id)) {
+      setIsLike(true);
+    } else {
+      setIsLike(false);
+    }
+  }, [post.likes, userId._id]);
+
+  const dispatch = useDispatch();
+  const token = getCookie("token");
+
+  const likeChangeHandler = () => {
+    setIsLike(true);
+    setlikeCount(likeCount + 1);
+    dispatch(likePostAction(post._id, token));
+  };
+
+  const unlikeChangeHandler = () => {
+    setIsLike(false);
+    setlikeCount(likeCount - 1);
+    dispatch(unlikePostAction(post._id, token));
+  };
+
+  const handleEmojiClick = (e, emojiObject) => {
+    setCommentData(commentData + emojiObject.emoji);
+  };
+
+  return (
+    <PostFooterContainer>
+      {emojiopen && (
+        <EmojiContainer>
+          <EmojiPicker
+            disableSearchBar
+            disableSkinTonePicker
+            onEmojiClick={handleEmojiClick}
+          />
+        </EmojiContainer>
+      )}
+      <IconContainer>
+        <Reactiontab>
+          <LikeButton
+            isLike={isLike}
+            likeChangeHandler={likeChangeHandler}
+            unlikeChangeHandler={unlikeChangeHandler}
+          />
+          <ChatBubbleOutlineSharpIcon />
+          <SendSharpIcon
+            style={{ transform: "rotate(-30deg)", marginTop: "-10px" }}
+          />
+        </Reactiontab>
+        <Savetab>
+          <BookmarkBorderSharpIcon />
+        </Savetab>
+      </IconContainer>
+      <p>
+        Liked by <span>{likeCount} people</span>
+      </p>
+      <p>
+        <span>{post.user[0].username}</span> &nbsp;&nbsp;
+        {post.content}
+      </p>
+      <p>View all {post.comments.length} comments</p>
+      <p>{moment(post.createdAt).fromNow()}</p>
+      <Comment
+        postId={post._id}
+        setemojiopen={setemojiopen}
+        emojiopen={emojiopen}
+        commentData={commentData}
+        setCommentData={setCommentData}
+      />
+    </PostFooterContainer>
+  );
+};
+
+export default PostFooter;
+
+const PostFooterContainer = styled.div`
+  width: 100%;
+  height: auto;
+  border: 1px solid #efefef;
+  background-color: #fff;
+  position: relative;
+
+  span {
+    font-size: 15px;
+    font-weight: 500;
+    color: #191919;
+  }
+
+  p {
+    max-width: 400px;
+    font-size: 15px;
+    margin-left: 15px;
+    color: #5c5c5c;
+    margin-top: 3px;
+  }
+`;
+
+const IconContainer = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Reactiontab = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .MuiSvgIcon-root {
+    font-size: 26px;
+    font-weight: normal;
+    margin-left: 15px;
+    cursor: pointer;
+  }
+`;
+const Savetab = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .MuiSvgIcon-root {
+    font-size: 26px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+`;
+
+const EmojiContainer = styled.div`
+  width: 100%;
+  height: 250px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  margin-top: -155px;
+  margin-left: -3px;
+  box-shadow: none;
+`;
+
+
+
+ useEffect(() => {
+    if (post.likes.find((like) => like == userId._id)) {
+      setIsLike(true);
+    } else {
+      setIsLike(false);
+    }
+  }, [post.likes, userId._id]);
+
+//footer
+
+
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import ChatBubbleOutlineSharpIcon from "@material-ui/icons/ChatBubbleOutlineSharp";
+import SendSharpIcon from "@material-ui/icons/SendSharp";
+import BookmarkBorderSharpIcon from "@material-ui/icons/BookmarkBorderSharp";
+import BookmarkSharpIcon from "@material-ui/icons/BookmarkSharp";
+import SentimentSatisfiedOutlinedIcon from "@material-ui/icons/SentimentSatisfiedOutlined";
+import moment from "moment";
+import LikeButton from "./LikeButton";
+import Comment from "./Comment";
+import { useSelector, useDispatch } from "react-redux";
+import { getCookie } from "../../helper";
+import {
+  likePostAction,
+  unlikePostAction,
+} from "../../Redux/Action/post.action";
+import EmojiPicker from "emoji-picker-react";
+
+const PostFooter = ({ post }) => {
+  const userId = JSON.parse(localStorage.getItem("user"));
+
+  const [isLike, setIsLike] = useState(false);
+  const [emojiopen, setemojiopen] = useState(false);
+  const [commentData, setCommentData] = useState("");
+  const [commentCount, setcommentCount] = useState(0);
+
+  useEffect(() => {
+    let getcommentCount = post.comments.length;
+    setcommentCount(getcommentCount);
+  }, [post]);
+
+  let likeInitialCount = post.likes.length;
+
+  const [likeCount, setlikeCount] = useState(likeInitialCount);
+
+  useEffect(() => {
+    if (post.likes.find((like) => like._id == userId._id)) {
+      setIsLike(true);
+    } else {
+      setIsLike(false);
+    }
+  }, [post.likes, userId._id]);
+
+  const dispatch = useDispatch();
+  const token = getCookie("token");
+
+  const likeChangeHandler = () => {
+    setIsLike(true);
+    setlikeCount(likeCount + 1);
+    dispatch(likePostAction(post._id, token));
+  };
+
+  const unlikeChangeHandler = () => {
+    setIsLike(false);
+    setlikeCount(likeCount - 1);
+    dispatch(unlikePostAction(post._id, token));
+  };
+
+  const handleEmojiClick = (e, emojiObject) => {
+    setCommentData(commentData + emojiObject.emoji);
+  };
+
+  let firstComment = post.comments.splice(0, 2);
+  console.log("firstComment", firstComment);
+
+  return (
+    <PostFooterContainer>
+      {emojiopen && (
+        <EmojiContainer>
+          <EmojiPicker
+            disableSearchBar
+            disableSkinTonePicker
+            onEmojiClick={handleEmojiClick}
+          />
+        </EmojiContainer>
+      )}
+      <IconContainer>
+        <Reactiontab>
+          <LikeButton
+            isLike={isLike}
+            likeChangeHandler={likeChangeHandler}
+            unlikeChangeHandler={unlikeChangeHandler}
+          />
+          <ChatBubbleOutlineSharpIcon />
+          <SendSharpIcon
+            style={{ transform: "rotate(-30deg)", marginTop: "-10px" }}
+          />
+        </Reactiontab>
+        <Savetab>
+          <BookmarkBorderSharpIcon />
+        </Savetab>
+      </IconContainer>
+      <p>
+        Liked by <span>{likeCount} people</span>
+      </p>
+
+      <p>
+        <span>{post.user[0].username}</span> &nbsp;&nbsp;
+        {post.content}
+      </p>
+      {firstComment.map((first, index) => (
+        <FirstcommentContainer key={index}>
+          {first.user.map((userdet, index) => (
+            <UserCommentTab key={index}>
+              <Avatar>
+                <img src={userdet.avatar} alt="Avatar" />
+              </Avatar>
+              <span>{userdet.username}</span>
+            </UserCommentTab>
+          ))}
+          <p>{first.content}</p>
+        </FirstcommentContainer>
+      ))}
+      <p>View all {commentCount} comments</p>
+      <p>{moment(post.createdAt).fromNow()}</p>
+      <Comment
+        postId={post._id}
+        setemojiopen={setemojiopen}
+        emojiopen={emojiopen}
+        commentData={commentData}
+        setCommentData={setCommentData}
+      />
+    </PostFooterContainer>
+  );
+};
+
+export default PostFooter;
+
+const PostFooterContainer = styled.div`
+  width: 100%;
+  height: auto;
+  border: 1px solid #efefef;
+  background-color: #fff;
+  position: relative;
+
+  span {
+    font-size: 15px;
+    font-weight: 500;
+    color: #191919;
+  }
+
+  p {
+    max-width: 500px;
+    font-size: 15px;
+    margin-left: 15px;
+    color: #5c5c5c;
+    margin-top: 3px;
+  }
+`;
+
+const IconContainer = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Reactiontab = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .MuiSvgIcon-root {
+    font-size: 26px;
+    font-weight: normal;
+    margin-left: 15px;
+    cursor: pointer;
+  }
+`;
+const Savetab = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .MuiSvgIcon-root {
+    font-size: 26px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+`;
+
+const EmojiContainer = styled.div`
+  width: 100%;
+  height: 250px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  margin-top: -155px;
+  margin-left: -3px;
+  box-shadow: none;
+`;
+
+const FirstcommentContainer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 8px;
+
+  span {
+    margin-left: 5px;
+  }
+
+  p {
+    margin-left: 8px;
+  }
+`;
+
+const Avatar = styled.div`
+  width: 25px;
+  height: 25px;
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+`;
+
+const UserCommentTab = styled.div`
+  width: 100%;
+  height: 100%;
+  border: 10px solid black;
+`;

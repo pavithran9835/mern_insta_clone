@@ -1,0 +1,57 @@
+*,
+:before,
+:after {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  background: RGB(32, 40, 48);
+}
+
+.object {
+  width: 96px;
+  height: 96px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  margin: auto;
+  border: 2px solid #0000008a;
+  border-top-color: RGB(255, 255, 255);
+  border-radius: 64px;
+  animation: spin 1s ease infinite;
+}
+
+.object:nth-child(1) {
+  opacity: 0.2;
+  animation-delay: 0.4s;
+}
+
+.object:nth-child(2) {
+  opacity: 0.4;
+  animation-delay: 0.3s;
+}
+
+.object:nth-child(3) {
+  opacity: 0.6;
+  animation-delay: 0.2s;
+}
+
+.object:nth-child(4) {
+  opacity: 0.8;
+  animation-delay: 0.1s;
+}
+
+.object:nth-child(5) {
+  opacity: 1;
+  animation-delay: 0s;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
